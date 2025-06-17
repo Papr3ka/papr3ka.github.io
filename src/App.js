@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
 import './App.css';
 
@@ -8,14 +8,15 @@ import Sidebar from './components/Sidebar.js'
 // Sections
 import About from './sections/About'
 import Interests from './sections/Interests'
-import Photos from './sections/Photos';
+import Gallery from './sections/Gallery.js';
 import Contact from './sections/Contact'
 
+// node v24.2.0
 
 const sections = [
   { id: 'about', title: 'About Me', component: About },
   { id: 'interests', title: 'Interests', component: Interests },
-  { id: 'photos', title: 'Photos', component: Photos},
+  { id: 'gallery', title: 'Gallery', component: Gallery},
   { id: 'contact', title: 'Contact', component: Contact }
 ];
 

@@ -1,7 +1,11 @@
 :root {
   --sidebar-colour: #1f1f1f;
   --page-colour: #17191d;
+  --page-colour-translucent: #17191dc0;
   --text-colour: azure;
+  --sidebar-width: 240px;
+  --accent-lugano-blue: #3864b4;
+  --accent-firmament-blue: #192a55;
 }
 
 .App {
@@ -21,7 +25,7 @@
 }
 
 .special-text:hover {
-  color: #3864b4;
+  color: var(--accent-lugano-blue)
 }
 
 * {
@@ -43,18 +47,20 @@ body {
 
 .sidebar {
   background-color: var(--page-colour);
-  backdrop-filter: blur(10px);
   box-shadow: 0px 0px 2px 0px rgb(0 0 0 / 2%);
 
   position: fixed;
-  width: 250px;
+  width: var(--sidebar-width);
   height: 100vh;
   color: white;
   padding: 32px 20px 32px 20px;
   overflow-y: auto;
-  transition: all 0.5s ease;
+  transition: background-color 0.5s ease;
+  z-index: 10;
 
-  font-family: "Roboto", serif;
+  /* font-family: "Roboto", serif; */
+
+  border-top: 4px solid var(--accent-firmament-blue);
 
   nav ul li button {
     transition: all 0.5s ease;
@@ -89,7 +95,7 @@ body {
   padding: 4px 8px 4px 0px;
   background-color: inherit; /* Will inherit from parent sidebar */
 
-  transition: all 0.5s ease;
+  transition: padding 0.5s ease;
 
 }
 
@@ -101,14 +107,15 @@ body {
 .sidebar nav ul li.active button {
   font-weight: bold;
   padding: 4px 8px 4px 8px;
+  color: var(--accent-lugano-blue);
 
 
   /*background-color: rgba(255, 255, 255, 0.2);*/
 }
 
 .content {
-  margin-left: 250px;
-  width: calc(100% - 250px);
+  margin-left: var(--sidebar-width);
+  width: calc(100% - var(--sidebar-width));
   background-color: var(--page-colour);
   color: var(--text-colour);
 
@@ -122,6 +129,7 @@ body {
   justify-content: center;
 }
 
+/* Used for <hr />*/
 .content-divider {
   margin-left: 50px;
   width: calc(80vw - 50px);
@@ -148,11 +156,12 @@ h1, h2 {
   width: 100%;
   color: #fcfbfc; /* frost */
   border-bottom: 1px solid #282c34;
-  transition: all 0.5s ease;
+  transition: color 0.5s ease;
+  transition: border 1s ease;
 
   &:hover {
       color: #3864b4;
-
+      border-bottom: 1px solid var(--accent-lugano-blue);
   }
 }
 
@@ -188,4 +197,73 @@ p {
   to {
     transform: rotate(360deg);
   }
+}
+
+/* Add these to your existing CSS */
+
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+  display: none;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1001;
+  background: var(--accent-firmament-blue);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Responsive Sidebar */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    z-index: 1000;
+    transition: left 0.3s ease;
+    padding: 16px 20px 16px 20px;
+  }
+
+  .sidebar nav ul li button {
+    padding: 2px 8px 2px 0px;
+  }
+
+  .sidebar.mobile-open {
+    left: 0;
+    background-color: var(--page-colour-translucent);
+    backdrop-filter: blur(6px);  }
+
+  .mobile-menu-toggle {
+    display: block;
+  }
+
+  .content {
+    margin-left: 0;
+    width: 100%;
+    padding-top: 60px; /* Space for mobile menu toggle */
+  }
+
+  .content-section {
+    padding: 30px 20px;
+    min-height: auto;
+  }
+}
+
+/* Adjust content padding for very small screens */
+@media (max-width: 480px) {
+  .content-section {
+    padding: 20px 15px;
+  }
+}
+
+/* Prevent horizontal scrolling */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
 }
