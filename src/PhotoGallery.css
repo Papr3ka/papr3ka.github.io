@@ -1,11 +1,5 @@
 @import url("App.css");
 
-.prevent-select {
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
 .photo-gallery {
     width: 100%;
     padding: 20px 0;
@@ -100,36 +94,52 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(8px);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    cursor: pointer;
+    /* cursor: pointer; */
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .modal-content-container {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
-    max-width: 90vw;
+    max-width: 1200px;
     gap: 20px;
 }
 
-.modal-content {
+.modal-main-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
     position: relative;
-    max-width: calc(100% - 140px);
-    max-height: 90vh;
+}
+
+.modal-image-container {
+    position: relative;
+    max-width: 100%;
+    max-height: 70vh;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: default;
+    padding-top: 33.33%;
+    padding-bottom: 33.33%;
+    padding-left: 64px;
+    padding-right: 64px;
 }
 
 .modal-image {
     max-width: 100%;
-    max-height: 90vh;
+    max-height: 70vh;
     object-fit: contain;
     border-radius: 5px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
@@ -171,10 +181,85 @@
     flex-shrink: 0;
 }
 
-.modal-nav:hover {
+/* Image preview strip */
+.image-preview-strip {
+    position: relative;
+    /* bottom: 13%; */
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    overflow-x: clip;
+    padding: 10px 0;
+}
+
+.preview-thumb {
+    width: 60px;
+    height: 60px;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    border: 2px solid transparent;
+}
+
+.preview-thumb:hover {
+    opacity: 0.9;
+}
+
+.preview-thumb.active {
+    opacity: 1;
+    border-color: var(--accent-lugano-blue);
+    transform: scale(1.1);
+}
+
+.preview-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Side navigation buttons */
+.side-nav {
+    position: fixed;
+    /* top: 50%; */
+    transform: translateY(-50%);
+    z-index: 1002;
+    background: var(--page-colour-translucent);
+    border-radius: 5%;
+    width: 48px;
+    height: 64px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.side-nav:hover {
     /* background: rgba(0, 0, 0, 0.8);
     transform: scale(1.05); */
     color: var(--accent-lugano-blue)
+}
+
+.modal-prev.side-nav {
+    left: 20px;
+}
+
+.modal-next.side-nav {
+    right: 20px;
+}
+
+/* Mobile navigation buttons */
+.mobile-nav-buttons {
+    display: none;
+    width: 100%;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 10px;
 }
 
 /* Responsive adjustments */
@@ -183,28 +268,45 @@
         max-width: calc(100% - 40px);
     }
 
+    .modal-image-container {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
     .modal-close {
         right: 15px;
         top: 72px;
     }
     
-    .modal-nav {
+    /* .modal-nav {
         width: 40px;
         height: 40px;
         font-size: 1.5rem;
         position: absolute;
-    }
+    } */
     
-    .modal-prev {
-        left: 10px;
+    .side-nav {
+        margin-left: auto;
+        margin-right: auto;
+        width: 32px;
+        height: 48px;
+        bottom: 2%;
     }
-    
-    .modal-next {
-        right: 10px;
+
+    .modal-prev.side-nav {
+        right: 80px;
     }
-    
+
+    .modal-next.side-nav {
+        left: 80px;
+    }
+
     .modal-content-container {
         gap: 0;
+    }
+
+    .photo-container:hover {
+        transform: scale(1.01);
     }
 }
 
@@ -234,15 +336,17 @@
     min-height: 400px;
 }
 
-@media (max-width: 768px) {
-    .modal-content {
-        min-width: 300px;
-        min-height: 200px;
-    }
+@media (max-width: 512px) {
     
     .image-error-placeholder {
         width: 300px;
         height: 200px;
         font-size: 1rem;
+    }
+
+    .side-nav {
+        margin-left: auto;
+        margin-right: auto;
+        bottom: 0;
     }
 }

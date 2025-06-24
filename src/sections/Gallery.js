@@ -11,40 +11,56 @@ const thumbnails = importAll(require.context('../assets/thumbnails/', false, /\.
 const photos = importAll(require.context('../assets/photos/', false, /\.(png|jpe?g|svg|webp)$/));
 
 const PhotoGallery = ({ thumbnails, photos }) => {
-  const [expanded, setExpanded] = useState(false);
+    const [expanded, setExpanded] = useState(false);
     const [columns, setColumns] = useState([]);
     const [dimensions, setDimensions] = useState({});
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const [showModal, setShowModal] = useState(false);
+    
 
+    // Masonary grid sizing
     const [columnCount, setColumnCount] = useState(3);
     const [gapSize, setGapSize] = useState(10);
+
+    // Image modal
+    const [showModal, setShowModal] = useState(false);
+    const [imgPreviewCount, setImgPreviewCount] = useState(7); // this should always be an odd number
 
     const galleryRef = useRef(null);
     const maxVisibleHeight = 960; // Max height before collapsing (in pixels)
 
+    const handleResize = () => {
+        const width = window.innerWidth;
+        
+        if (width < 512) {
+            setColumnCount(1);
+            setGapSize(8);
+
+            setImgPreviewCount(3)
+        } else if (width < 768) {
+            setColumnCount(2);
+            setGapSize(10);
+
+            setImgPreviewCount(5)
+        }else if (width < 1024) {
+            setColumnCount(3);
+            setGapSize(10);
+
+            setImgPreviewCount(7)
+        } else if (width < 1280){
+            setColumnCount(4);
+            setGapSize(16);
+
+            setImgPreviewCount(11)
+        } else {
+            setColumnCount(Math.floor(width/256));
+            setGapSize(20);
+
+            setImgPreviewCount(15);
+        }
+    };
+
     // Calculate responsive column count and gap
     useEffect(() => {
-        const handleResize = () => {
-            const width = window.innerWidth;
-            if (width < 512) {
-                setColumnCount(1);
-                setGapSize(8);
-            } else if (width < 768) {
-                setColumnCount(2);
-                setGapSize(10);
-            }else if (width < 1024) {
-                setColumnCount(3);
-                setGapSize(10);
-            } else if (width < 1280){
-                setColumnCount(4);
-                setGapSize(16);
-            } else {
-                setColumnCount(Math.floor(width/256));
-                setGapSize(20);
-            }
-        };
-
         handleResize();
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
@@ -150,7 +166,8 @@ const PhotoGallery = ({ thumbnails, photos }) => {
                 style={{ 
                     height: `${visibleHeight}px`,
                     transition: 'height 0.5s ease-in-out',
-                    gap: `${gapSize}px`
+                    gap: `${gapSize}px`,
+                    padding: `${gapSize/2}px`,
                 }}
             >
                 {columns.map((column, colIndex) => (
@@ -162,7 +179,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
                         {column.items.map((photo, photoIndex) => (
                             <div
                                 key={`photo-${colIndex}-${photoIndex}`}
-                                className="photo-container"
+                                className="photo-container prevent-select"
                                 style={{
                                     width: '100%',
                                     paddingBottom: `${100 / photo.width * photo.height}%`,
@@ -224,65 +241,126 @@ const PhotoGallery = ({ thumbnails, photos }) => {
             )}
             {/* Image Modal */}
             {showModal && (
-                <div className="image-modal" onClick={closeModal}>
+                <div className="image-modal">
                     <button className="modal-close" onClick={closeModal}>
                         &times;
                     </button>
-                    <div className="modal-content-container">
-                        <button 
-                            className="modal-nav modal-prev" 
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                navigateImage('prev');
-                            }}
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" 
-                                width="24" 
-                                height="24"
-                                fill="none">
-                                <path d="M15.293 3.293 6.586 12l8.707 8.707 1.414-1.414L9.414 12l7.293-7.293-1.414-1.414z"
-                                      stroke="currentColor"
-                                      strokeWidth="2"
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                />
-                            </svg>
-                        </button>
-                        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                            {currentImageIndex >= photos.length? (
+                    
+                    {/* Side navigation buttons (desktop) */}
+                    <button 
+                        className="modal-nav modal-prev side-nav" 
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            navigateImage('prev');
+                        }}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none">
+                            <path d="M15.293 3.293 6.586 12l8.707 8.707 1.414-1.414L9.414 12l7.293-7.293-1.414-1.414z"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            />
+                        </svg>
+                    </button>
+                    
+                    <button 
+                        className="modal-nav modal-next side-nav" 
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            navigateImage('next');
+                        }}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                            <path d="M7.293 4.707 14.586 12l-7.293 7.293 1.414 1.414L17.414 12 8.707 3.293 7.293 4.707z"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            />
+                        </svg>
+                    </button>
+
+                    <div className="modal-content-container" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-image-container">
+                            {currentImageIndex >= photos.length ? (
                                 <div className="image-error-placeholder">
                                     <span>Image Not Found</span>
                                 </div>
                             ) : (
                                 <LazyLoadImage 
-                                        src={photos[currentImageIndex]} 
-                                        effect="blur"
-                                        wrapperProps={{
-                                            style: { transition: "0.5s" },
-                                        }}
-                                        alt={`Full resolution ${currentImageIndex}`}
-                                        className="modal-image"
+                                    src={photos[currentImageIndex]} 
+                                    effect="blur"
+                                    wrapperProps={{
+                                        style: { transition: "0.5s" },
+                                    }}
+                                    alt={`Full resolution ${currentImageIndex}`}
+                                    className="modal-image"
                                 />
                             )}
                         </div>
-                        <button 
-                            className="modal-nav modal-next" 
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                navigateImage('next');
-                            }}
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" 
-                                width="24" 
-                                height="24">
-                                <path d="M7.293 4.707 14.586 12l-7.293 7.293 1.414 1.414L17.414 12 8.707 3.293 7.293 4.707z"
-                                      stroke="currentColor"
-                                      strokeWidth="2"
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                />
-                            </svg>
-                        </button>
+
+                        {/* Mobile navigation buttons */}
+                        <div className="mobile-nav-buttons">
+                            <button 
+                                className="modal-nav modal-prev" 
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigateImage('prev');
+                                }}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none">
+                                    <path d="M15.293 3.293 6.586 12l8.707 8.707 1.414-1.414L9.414 12l7.293-7.293-1.414-1.414z"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
+                            </button>
+                            <button 
+                                className="modal-nav modal-next" 
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigateImage('next');
+                                }}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                                    <path d="M7.293 4.707 14.586 12l-7.293 7.293 1.414 1.414L17.414 12 8.707 3.293 7.293 4.707z"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
+                            </button>
+                        </div>
+
+                        {/* Image preview strip */}
+                        <div className="image-preview-strip">
+                            {thumbnails.slice(
+                                Math.max(0, currentImageIndex - Math.floor(imgPreviewCount/2)),
+                                Math.min(thumbnails.length, currentImageIndex + Math.ceil(imgPreviewCount/2))
+                            ).map((thumb, index) => {
+                                const originalIndex = Math.max(0, currentImageIndex - Math.floor(imgPreviewCount/2)) + index;
+                                return (
+                                    <div 
+                                        key={`preview-${originalIndex}`}
+                                        className={`preview-thumb ${originalIndex === currentImageIndex ? 'active' : ''}`}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setCurrentImageIndex(originalIndex);
+                                        }}
+                                    >
+                                        <LazyLoadImage
+                                            src={thumb}
+                                            effect="blur"
+                                            alt={`Thumbnail ${originalIndex}`}
+                                        />
+                                    </div>
+                                );
+                            })}
+                        </div>
                     </div>
                 </div>
             )}
