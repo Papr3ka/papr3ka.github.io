@@ -24,12 +24,14 @@ const PhotoGallery = ({ thumbnails, photos }) => {
     // Image modal
     const [showModal, setShowModal] = useState(false);
     const [imgPreviewCount, setImgPreviewCount] = useState(7); // this should always be an odd number
+    const [showPreviewStrip, setShowPreviewStrip] = useState(true);
 
     const galleryRef = useRef(null);
     const maxVisibleHeight = 960; // Max height before collapsing (in pixels)
 
     const handleResize = () => {
         const width = window.innerWidth;
+        const height = window.innerHeight;
         
         if (width < 512) {
             setColumnCount(1);
@@ -57,6 +59,9 @@ const PhotoGallery = ({ thumbnails, photos }) => {
 
             setImgPreviewCount(15);
         }
+
+        // Only show the preview strip if the height is >= 768 px
+        setShowPreviewStrip(height >= 768); 
     };
 
     // Calculate responsive column count and gap
@@ -337,7 +342,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
                         </div>
 
                         {/* Image preview strip */}
-                        <div className="image-preview-strip">
+                        {showPreviewStrip && (<div className="image-preview-strip">
                             {thumbnails.slice(
                                 Math.max(0, currentImageIndex - Math.floor(imgPreviewCount/2)),
                                 Math.min(thumbnails.length, currentImageIndex + Math.ceil(imgPreviewCount/2))
@@ -360,7 +365,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
                                     </div>
                                 );
                             })}
-                        </div>
+                        </div>)}
                     </div>
                 </div>
             )}

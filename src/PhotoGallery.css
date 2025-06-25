@@ -131,8 +131,6 @@
     justify-content: center;
     align-items: center;
     cursor: default;
-    padding-top: 33.33%;
-    padding-bottom: 33.33%;
     padding-left: 64px;
     padding-right: 64px;
 }
@@ -286,19 +284,11 @@
     } */
     
     .side-nav {
-        margin-left: auto;
-        margin-right: auto;
+        /* margin-left: auto;
+        margin-right: auto; */
         width: 32px;
         height: 48px;
         bottom: 2%;
-    }
-
-    .modal-prev.side-nav {
-        right: 80px;
-    }
-
-    .modal-next.side-nav {
-        left: 80px;
     }
 
     .modal-content-container {
@@ -345,8 +335,8 @@
     }
 
     .side-nav {
-        margin-left: auto;
-        margin-right: auto;
+        /* margin-left: auto;
+        margin-right: auto; */
         bottom: 0;
     }
 }
