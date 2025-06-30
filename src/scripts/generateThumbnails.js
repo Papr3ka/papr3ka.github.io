@@ -53,7 +53,7 @@ fs.readdirSync(inputDir).forEach(async (file) => {
       .webp({ quality: quality }) 
       .toFile(outputPath);
 
-    console.log(`Generated: ${outputPath} (${newWidth}x${newHeight}`);
+    console.log(`Generated: ${outputPath} (${newWidth}x${newHeight})`);
   } catch (err) {
     console.error(`Error processing ${file}:`, err);
   }
