@@ -4,7 +4,7 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 import '../PhotoGallery.css';
 
 function importAll(r) {
-    return r.keys().map(r);
+    return r.keys().map(r).reverse();
 }
 
 const thumbnails = importAll(require.context('../assets/thumbnails/', false, /\.(png|jpe?g|svg|webp)$/));
