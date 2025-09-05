@@ -1,14 +1,28 @@
 import { useState, useRef, useEffect } from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
-import '../PhotoGallery.css';
+import './Gallery.css';
+
+// Pin photos to the start of the gallery
+const INITIAL_ORDER = [""];
 
 function importAll(r) {
-    return r.keys().map(r).reverse();
+    let imported = r.keys().map(r).reverse();
+    let initial = 0;
+    for (let i = 0; i < imported.length; i++) {
+        if (initial > INITIAL_ORDER.length) break;
+        if (imported[i].includes(INITIAL_ORDER[initial])) {
+            let temp = imported[i];
+            imported[i] = imported[initial];
+            imported[initial] = temp;
+            initial++;
+        }
+    }
+    return imported;
 }
 
-const thumbnails = importAll(require.context('../assets/thumbnails/', false, /\.(png|jpe?g|svg|webp)$/));
-const photos = importAll(require.context('../assets/photos/', false, /\.(png|jpe?g|svg|webp)$/));
+const thumbnails = importAll(require.context('../../assets/thumbnails/', false, /\.(png|jpe?g|svg|webp)$/));
+const photos = importAll(require.context('../../assets/photos/', false, /\.(png|jpe?g|svg|webp)$/));
 
 const PhotoGallery = ({ thumbnails, photos }) => {
     const [expanded, setExpanded] = useState(false);
@@ -376,7 +390,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
 const Photos = () => {
     return (
         <div className="photos-section">
-            <h1>Photos</h1>
+            <h1>Gallery</h1>
             <p>I enjoy taking photos...</p>
             <PhotoGallery thumbnails={thumbnails} photos={photos}/>
         </div>
