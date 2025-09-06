@@ -29,7 +29,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
     const [columns, setColumns] = useState([]);
     const [dimensions, setDimensions] = useState({});
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    
+
 
     // Masonary grid sizing
     const [columnCount, setColumnCount] = useState(3);
@@ -46,7 +46,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
     const handleResize = () => {
         const width = window.innerWidth;
         const height = window.innerHeight;
-        
+
         if (width < 512) {
             setColumnCount(1);
             setGapSize(8);
@@ -57,25 +57,25 @@ const PhotoGallery = ({ thumbnails, photos }) => {
             setGapSize(10);
 
             setImgPreviewCount(5)
-        }else if (width < 1024) {
+        } else if (width < 1024) {
             setColumnCount(3);
             setGapSize(10);
 
             setImgPreviewCount(7)
-        } else if (width < 1280){
+        } else if (width < 1280) {
             setColumnCount(4);
             setGapSize(16);
 
             setImgPreviewCount(11)
         } else {
-            setColumnCount(Math.floor(width/256));
+            setColumnCount(Math.floor(width / 256));
             setGapSize(20);
 
             setImgPreviewCount(15);
         }
 
         // Only show the preview strip if the height is >= 768 px
-        setShowPreviewStrip(height >= 768); 
+        setShowPreviewStrip(height >= 768);
     };
 
     // Calculate responsive column count and gap
@@ -121,19 +121,19 @@ const PhotoGallery = ({ thumbnails, photos }) => {
         const calculateColumns = () => {
             const galleryWidth = galleryRef.current.offsetWidth;
             const columnWidth = (galleryWidth - (gapSize * (columnCount - 1))) / columnCount;
-            
+
             const tempColumns = Array(columnCount).fill().map(() => ({ height: 0, items: [] }));
 
             thumbnails.forEach((photo, index) => {
                 const dim = dimensions[index] || { aspectRatio: 1 };
                 // Calculate height based on column width while maintaining aspect ratio
                 const itemHeight = columnWidth / dim.aspectRatio;
-                
+
                 // Find the shortest column
-                const shortestColumn = tempColumns.reduce((prev, curr) => 
+                const shortestColumn = tempColumns.reduce((prev, curr) =>
                     curr.height < prev.height ? curr : prev
                 );
-                
+
                 shortestColumn.items.push({
                     src: photo,
                     width: columnWidth,
@@ -168,7 +168,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
         setShowModal(false);
     };
 
-    const galleryHeight = columns.reduce((max, column) => 
+    const galleryHeight = columns.reduce((max, column) =>
         Math.max(max, column.height), 0
     );
 
@@ -180,18 +180,18 @@ const PhotoGallery = ({ thumbnails, photos }) => {
 
     return (
         <div className="photo-gallery" ref={galleryRef}>
-            <div 
-                className={`masonry-grid ${expanded || !shouldShowToggle ? 'expanded' : ''}`} 
-                style={{ 
+            <div
+                className={`masonry-grid ${expanded || !shouldShowToggle ? 'expanded' : ''}`}
+                style={{
                     height: `${visibleHeight}px`,
                     transition: 'height 0.5s ease-in-out',
                     gap: `${gapSize}px`,
-                    padding: `${gapSize/2}px`,
+                    padding: `${gapSize / 2}px`,
                 }}
             >
                 {columns.map((column, colIndex) => (
-                    <div 
-                        key={`col-${colIndex}`} 
+                    <div
+                        key={`col-${colIndex}`}
                         className="masonry-column"
                         style={{ gap: `${gapSize}px` }}
                     >
@@ -210,13 +210,13 @@ const PhotoGallery = ({ thumbnails, photos }) => {
                                     src={photo.src}
                                     effect="blur"
                                     wrapperProps={{
-                                        style: { 
+                                        style: {
                                             position: 'absolute',
                                             top: 0,
                                             left: 0,
                                             width: '100%',
                                             height: '100%',
-                                            transition: "1s" 
+                                            transition: "1s"
                                         },
                                     }}
                                     alt={`Photo ${colIndex * 100 + photoIndex + 1}`}
@@ -264,10 +264,10 @@ const PhotoGallery = ({ thumbnails, photos }) => {
                     <button className="modal-close" onClick={closeModal}>
                         &times;
                     </button>
-                    
+
                     {/* Side navigation buttons (desktop) */}
-                    <button 
-                        className="modal-nav modal-prev side-nav" 
+                    <button
+                        className="modal-nav modal-prev side-nav"
                         onClick={(e) => {
                             e.stopPropagation();
                             navigateImage('prev');
@@ -282,9 +282,9 @@ const PhotoGallery = ({ thumbnails, photos }) => {
                             />
                         </svg>
                     </button>
-                    
-                    <button 
-                        className="modal-nav modal-next side-nav" 
+
+                    <button
+                        className="modal-nav modal-next side-nav"
                         onClick={(e) => {
                             e.stopPropagation();
                             navigateImage('next');
@@ -307,8 +307,8 @@ const PhotoGallery = ({ thumbnails, photos }) => {
                                     <span>Image Not Found</span>
                                 </div>
                             ) : (
-                                <LazyLoadImage 
-                                    src={photos[currentImageIndex]} 
+                                <LazyLoadImage
+                                    src={photos[currentImageIndex]}
                                     effect="blur"
                                     wrapperProps={{
                                         style: { transition: "0.5s" },
@@ -321,8 +321,8 @@ const PhotoGallery = ({ thumbnails, photos }) => {
 
                         {/* Mobile navigation buttons */}
                         <div className="mobile-nav-buttons">
-                            <button 
-                                className="modal-nav modal-prev" 
+                            <button
+                                className="modal-nav modal-prev"
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     navigateImage('prev');
@@ -337,8 +337,8 @@ const PhotoGallery = ({ thumbnails, photos }) => {
                                     />
                                 </svg>
                             </button>
-                            <button 
-                                className="modal-nav modal-next" 
+                            <button
+                                className="modal-nav modal-next"
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     navigateImage('next');
@@ -358,12 +358,12 @@ const PhotoGallery = ({ thumbnails, photos }) => {
                         {/* Image preview strip */}
                         {showPreviewStrip && (<div className="image-preview-strip">
                             {thumbnails.slice(
-                                Math.max(0, currentImageIndex - Math.floor(imgPreviewCount/2)),
-                                Math.min(thumbnails.length, currentImageIndex + Math.ceil(imgPreviewCount/2))
+                                Math.max(0, currentImageIndex - Math.floor(imgPreviewCount / 2)),
+                                Math.min(thumbnails.length, currentImageIndex + Math.ceil(imgPreviewCount / 2))
                             ).map((thumb, index) => {
-                                const originalIndex = Math.max(0, currentImageIndex - Math.floor(imgPreviewCount/2)) + index;
+                                const originalIndex = Math.max(0, currentImageIndex - Math.floor(imgPreviewCount / 2)) + index;
                                 return (
-                                    <div 
+                                    <div
                                         key={`preview-${originalIndex}`}
                                         className={`preview-thumb ${originalIndex === currentImageIndex ? 'active' : ''}`}
                                         onClick={(e) => {
@@ -392,7 +392,7 @@ const Photos = () => {
         <div className="photos-section">
             <h1>Gallery</h1>
             <p>I enjoy taking photos...</p>
-            <PhotoGallery thumbnails={thumbnails} photos={photos}/>
+            <PhotoGallery thumbnails={thumbnails} photos={photos} />
         </div>
     );
 };

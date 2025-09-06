@@ -1,0 +1,81 @@
+@import url("../../App.css");
+
+.about-section,
+.interests-section,
+.photos-section,
+.contact-section,
+.hobbies-section,
+.portfolio-section,
+.contact-section,
+.resume-section {
+  /*max-width: 800px;*/
+  width: 100%;
+  margin: 0 auto 0 0;
+}
+
+.icon {
+  display: inline;
+  vertical-align: bottom;
+  bottom: 0;
+  fill: var(--text-colour);
+  transition: border-bottom 0.5s ease;
+  border-bottom: solid 2px #00000000;
+  cursor: pointer;
+}
+
+.icon:hover {
+  border-bottom: solid 2px var(--accent-lugano-blue);
+}
+
+
+
+h1,
+h2 {
+  margin-bottom: 20px;
+  width: 100%;
+  color: #fcfbfc;
+  /* frost */
+  border-bottom: 1px solid #282c34;
+  transition: color 0.5s ease;
+  transition: border 1s ease;
+
+  font-family: 'Oxanium', sans-serif;
+
+  &:hover {
+    /* color: #3864b4; */
+    border-bottom: 1px solid var(--accent-lugano-blue);
+  }
+}
+
+p {
+  margin-bottom: 10px;
+}
+
+/* Responsive Sidebar */
+@media (max-width: 768px) {
+  .content {
+    margin-left: 0;
+    width: 100%;
+    padding-top: 60px;
+    /* Space for mobile menu toggle */
+  }
+
+  .content-section {
+    padding: 30px 20px;
+    min-height: auto;
+  }
+}
+
+/* Adjust content padding for very small screens */
+@media (max-width: 480px) {
+  .content-section {
+    padding: 20px 15px;
+  }
+}
+
+/* Prevent horizontal scrolling */
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+}

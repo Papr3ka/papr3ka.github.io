@@ -2,14 +2,14 @@ import { createContext, useContext, useReducer } from 'react';
 
 // Initial state for your global state
 const initialState = {
-//   theme: 'dark',
+  //   theme: 'dark',
 
 };
 
 // Action types for the reducer
 export const ActionTypes = {
 
-//   SET_THEME: 'SET_THEME',
+  //   SET_THEME: 'SET_THEME',
 
   // Add more action types as needed
 };
@@ -22,9 +22,9 @@ const appReducer = (state, action) => {
     //     ...state,
     //     theme: action.payload,
     //   };
- 
+
     // Add more cases for new state properties
-    
+
     default:
       return state;
   }
@@ -59,11 +59,11 @@ export const AppProvider = ({ children }) => {
 // Custom hook to use the context
 export const useAppContext = () => {
   const context = useContext(AppContext);
-  
+
   if (!context) {
     throw new Error('useAppContext must be used within an AppProvider');
   }
-  
+
   return context;
 };
 

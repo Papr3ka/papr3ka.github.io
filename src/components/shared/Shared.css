@@ -1,0 +1,121 @@
+@import url("../../App.css");
+
+.sidebar {
+  background-color: var(--page-colour);
+  box-shadow: 0px 0px 2px 0px rgb(0 0 0 / 2%);
+
+  position: fixed;
+  width: var(--sidebar-width);
+  height: 100vh;
+  color: white;
+  padding: 32px 20px 32px 20px;
+  overflow-y: auto;
+  transition: border 0.5s ease;
+  z-index: 10;
+
+  border-top: 4px solid var(--accent-firmament-blue);
+
+  nav ul li button {
+    transition: all 0.5s ease;
+  }
+}
+
+.sidebar:hover {
+  /* background-color: var(--sidebar-colour); */
+  box-shadow: 0px 0px 3px 3px rgb(0 0 0 / 10%);
+
+  /* nav ul li button {
+    background-color: var(--sidebar-colour)
+  } */
+}
+
+.sidebar nav ul {
+  list-style: none;
+}
+
+/* .sidebar nav ul li {
+  margin-bottom: 15px;
+} 
+*/
+
+.sidebar nav ul li button {
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-family: 'Tomorrow', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+
+  font-size: 16px;
+  text-align: left;
+  width: 100%;
+  padding: 4px 8px 4px 0px;
+  background-color: inherit;
+  /* Will inherit from parent sidebar */
+
+  transition: padding 0.5s ease;
+
+}
+
+.sidebar nav ul li button:hover {
+  /* background-color: rgba(255, 255, 255, 0.1); */
+  border-right: 2px solid #fcfbfc;
+}
+
+.sidebar nav ul li.active button {
+  font-weight: 500;
+  padding: 4px 8px 4px 8px;
+  color: var(--accent-lugano-blue);
+
+
+  /*background-color: rgba(255, 255, 255, 0.2);*/
+}
+
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+  opacity: 0.5;
+  display: none;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1001;
+  background: var(--accent-firmament-blue);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.5s ease;
+}
+
+.mobile-menu-toggle:hover {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    z-index: 1000;
+    transition: left 0.3s ease;
+    padding: 16px 20px 16px 20px;
+  }
+
+  .sidebar nav ul li button {
+    padding: 2px 8px 2px 0px;
+  }
+
+  .sidebar.mobile-open {
+    left: 0;
+    background-color: var(--page-colour-translucent);
+    backdrop-filter: blur(6px);
+  }
+
+  .mobile-menu-toggle {
+    display: block;
+  }
+}

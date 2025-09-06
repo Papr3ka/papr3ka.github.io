@@ -8,7 +8,7 @@ const About = () => {
         Hi, I'm <b className="special-text">Benjamin Yao</b>
       </p>
       <p>
-         Currently a second year Computer engineering student at the University of Waterloo
+        Currently a second year Computer engineering student at the University of Waterloo
       </p>
     </div>
   );

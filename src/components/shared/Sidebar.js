@@ -1,24 +1,26 @@
 import React, { useState } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 
+import './Shared.css'
+
 const Sidebar = ({ sections, activeSection, scrollToSection }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <>
-      <button 
+      <button
         className="mobile-menu-toggle"
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
       >
         {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
       </button>
-      
+
       <aside className={`sidebar ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
         <nav>
           <ul>
             {sections.map((section) => (
-              <li 
-                key={section.id} 
+              <li
+                key={section.id}
                 className={activeSection === section.id ? 'active' : ''}
               >
                 <button onClick={() => {

@@ -50,7 +50,7 @@ fs.readdirSync(inputDir).forEach(async (file) => {
         fit: 'inside',
         withoutEnlargement: true
       })
-      .webp({ quality: quality }) 
+      .webp({ quality: quality })
       .toFile(outputPath);
 
     console.log(`Generated: ${outputPath} (${newWidth}x${newHeight})`);
