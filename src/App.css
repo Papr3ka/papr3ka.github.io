@@ -1,12 +1,35 @@
 :root {
+  --sidebar-width: 240px;
+
   --sidebar-colour: #1f1f1f;
   --page-colour: #17191d;
   --page-colour-translucent: #17191dc0;
   --text-colour: azure;
-  --sidebar-width: 240px;
+
   --accent-lugano-blue: #3864b4;
+  /* lugano-blue */
   --accent-firmament-blue: #192a55;
-  --drak-gray: #101213;
+  --accent-red: #FF3864;
+  --accent-coral: #ED8055;
+  --accent-mint: #63C595;
+  --near-black: #101213;
+  --blue-gray: #282c34;
+  /* Colours */
+
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .app {

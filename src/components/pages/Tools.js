@@ -9,6 +9,8 @@ import { SideBarHandler, scrollToSection } from '../shared/Util.js'
 // Sections
 import Calculators from '../sections/Calculators.js'
 
+import Footer from '../sections/Footer.js'
+
 const sections = [
     { id: 'calculators', title: 'Calculators', component: Calculators }
 ];
@@ -39,6 +41,7 @@ const Tools = () => {
                         {/*index < (sections.length - 1) && <hr className="content-divider" />*/}
                     </>
                 ))}
+                <Footer />
             </div>
         </div>
     )
