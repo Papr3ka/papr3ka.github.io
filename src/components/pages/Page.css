@@ -1,16 +1,44 @@
 @import url("../../App.css");
 
-.about-section,
-.interests-section,
-.photos-section,
-.contact-section,
-.hobbies-section,
-.portfolio-section,
-.contact-section,
-.resume-section {
+.section {
   /*max-width: 800px;*/
   width: 100%;
   margin: 0 auto 0 0;
+}
+
+.content-section {
+  min-height: 80vh;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Used for <hr />*/
+.content-divider {
+  margin-left: 50px;
+  width: calc(80vw - 50px);
+  height: 4px;
+  border: none;
+  background-color: #282c34;
+}
+
+.footer {
+  padding: 1.5vh;
+  height: 15vh;
+  width: 100vw;
+  background-color: var(--drak-gray);
+}
+
+.footer-text {
+  font-family: 'Fira Code', sans-serif;
+  color: #31363f;
+  transition: color 0.5s ease;
+  display: inline-block
+}
+
+.footer-text:hover {
+  color: var(--text-colour);
 }
 
 .icon {
@@ -20,14 +48,11 @@
   fill: var(--text-colour);
   transition: border-bottom 0.5s ease;
   border-bottom: solid 2px #00000000;
-  cursor: pointer;
 }
 
 .icon:hover {
   border-bottom: solid 2px var(--accent-lugano-blue);
 }
-
-
 
 h1,
 h2 {

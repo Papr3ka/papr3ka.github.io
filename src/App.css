@@ -6,6 +6,7 @@
   --sidebar-width: 240px;
   --accent-lugano-blue: #3864b4;
   --accent-firmament-blue: #192a55;
+  --drak-gray: #101213;
 }
 
 .app {
@@ -54,6 +55,10 @@
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
+.clickable {
+  cursor: pointer;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -76,21 +81,4 @@ body {
   width: calc(100% - var(--sidebar-width));
   background-color: var(--page-colour);
   color: var(--text-colour);
-}
-
-.content-section {
-  min-height: 100vh;
-  padding: 50px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-/* Used for <hr />*/
-.content-divider {
-  margin-left: 50px;
-  width: calc(80vw - 50px);
-  height: 4px;
-  border: none;
-  background-color: #282c34;
 }

@@ -9,7 +9,7 @@ const Sidebar = ({ sections, activeSection, scrollToSection }) => {
   return (
     <>
       <button
-        className="mobile-menu-toggle"
+        className="mobile-menu-toggle clickable"
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
       >
         {isMobileMenuOpen ? <FaTimes /> : <FaBars />}

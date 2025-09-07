@@ -236,7 +236,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
 
             {shouldShowToggle && (
                 <button
-                    className="toggle-expand-btn"
+                    className="toggle-expand-btn clickable"
                     onClick={() => setExpanded(!expanded)}
                     aria-expanded={expanded}
                 >
@@ -261,13 +261,13 @@ const PhotoGallery = ({ thumbnails, photos }) => {
             {/* Image Modal */}
             {showModal && (
                 <div className="image-modal">
-                    <button className="modal-close" onClick={closeModal}>
+                    <button className="modal-close clickable" onClick={closeModal}>
                         &times;
                     </button>
 
                     {/* Side navigation buttons (desktop) */}
                     <button
-                        className="modal-nav modal-prev side-nav"
+                        className="modal-nav modal-prev side-nav clickable"
                         onClick={(e) => {
                             e.stopPropagation();
                             navigateImage('prev');
@@ -284,7 +284,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
                     </button>
 
                     <button
-                        className="modal-nav modal-next side-nav"
+                        className="modal-nav modal-next side-nav clickable"
                         onClick={(e) => {
                             e.stopPropagation();
                             navigateImage('next');
@@ -322,7 +322,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
                         {/* Mobile navigation buttons */}
                         <div className="mobile-nav-buttons">
                             <button
-                                className="modal-nav modal-prev"
+                                className="modal-nav modal-prev clickable"
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     navigateImage('prev');
@@ -338,7 +338,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
                                 </svg>
                             </button>
                             <button
-                                className="modal-nav modal-next"
+                                className="modal-nav modal-next clickable"
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     navigateImage('next');
@@ -365,7 +365,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
                                 return (
                                     <div
                                         key={`preview-${originalIndex}`}
-                                        className={`preview-thumb ${originalIndex === currentImageIndex ? 'active' : ''}`}
+                                        className={`preview-thumb clickable ${originalIndex === currentImageIndex ? 'active' : ''}`}
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             setCurrentImageIndex(originalIndex);
@@ -389,7 +389,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
 
 const Photos = () => {
     return (
-        <div className="photos-section">
+        <div className="section">
             <h1>Gallery</h1>
             <p>I enjoy taking photos...</p>
             <PhotoGallery thumbnails={thumbnails} photos={photos} />

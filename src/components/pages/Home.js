@@ -12,6 +12,8 @@ import Interests from '../sections/Interests.js'
 import Gallery from '../sections/Gallery.js'
 import Contact from '../sections/Contact.js'
 
+import Footer from '../sections/Footer.js'
+
 const sections = [
     { id: 'about', title: 'About Me', component: About },
     { id: 'interests', title: 'Interests', component: Interests },
@@ -45,7 +47,9 @@ const Home = () => {
                         {/*index < (sections.length - 1) && <hr className="content-divider" />*/}
                     </>
                 ))}
+                <Footer />
             </div>
+           
         </div>
     )
 }
