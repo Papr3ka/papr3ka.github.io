@@ -89,6 +89,11 @@ p {
     padding: 30px 20px;
     min-height: auto;
   }
+
+  .footer {
+    display: flex;
+    justify-content: center;
+  }
 }
 
 /* Adjust content padding for very small screens */
