@@ -391,7 +391,7 @@ const Photos = () => {
     return (
         <div className="section">
             <h1>Gallery</h1>
-            <p>I enjoy taking photos...</p>
+            <p>I enjoy taking photos of things and places</p>
             <PhotoGallery thumbnails={thumbnails} photos={photos} />
         </div>
     );
