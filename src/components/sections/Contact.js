@@ -5,7 +5,7 @@ const Contact = () => {
     <div className="section">
       <h1>Contact</h1>
       {/* Linkedin */}
-      <a href="https://www.linkedin.com/in/benjamin-yao-39677428b">
+      <a href="https://www.linkedin.com/in/benjamin-yao-39677428b" target="_blank" rel="noopener noreferrer">
         <svg
 
           width="66"
@@ -19,7 +19,7 @@ const Contact = () => {
         </svg>
       </a>
       {/* Github */}
-      <a href="https://github.com/Papr3ka">
+      <a href="https://github.com/Papr3ka" target="_blank" rel="noopener noreferrer">
         <svg
           width="66"
           height="66"
