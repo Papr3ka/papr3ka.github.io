@@ -38,6 +38,7 @@ const Skills = () => {
                             <div className="pill">Verilog</div>
                             <div className="pill">GTKWave</div>
                             <div className="pill">Icarus Verilog</div>
+                            <div className="pill">LTSpice</div>
                         </div>
                     </div>
                 </div>
