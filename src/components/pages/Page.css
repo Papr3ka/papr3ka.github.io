@@ -11,7 +11,7 @@
 }
 
 .content-section {
-  min-height: 50vh;
+  min-height: 75vh;
   padding: 50px;
   display: flex;
   flex-direction: column;
@@ -67,7 +67,6 @@
   justify-content: stretch;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-
 }
 
 .text-line {
@@ -130,6 +129,27 @@
   font-weight: 700;
 }
 
+.vertical-container {
+  display: grid;
+  row-gap: 1em;
+  justify-items: stretch;
+  align-items: stretch;
+  justify-content: stretch;
+  grid-template-rows: 1fr;
+}
+
+.experience-overview {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--payne-gray);
+}
+
+.experience-description {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--text-colour);
+}
+
 h1 {
   margin-bottom: 20px;
   width: 100%;
@@ -155,6 +175,8 @@ h2 {
   font-weight: 400;
   font-family: 'Oxanium', sans-serif;
 }
+
+
 
 p {
   margin-bottom: 10px;
