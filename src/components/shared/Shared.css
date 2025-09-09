@@ -1,9 +1,9 @@
 @import url("../../App.css");
 
+/* Existing sidebar styles */
 .sidebar {
   background-color: var(--page-colour);
   box-shadow: 0px 0px 2px 0px rgb(0 0 0 / 2%);
-
   position: fixed;
   width: var(--sidebar-width);
   height: 100vh;
@@ -12,31 +12,20 @@
   overflow-y: auto;
   transition: border 0.5s ease;
   z-index: 10;
-
   border-top: 4px solid var(--accent-firmament-blue);
+}
 
-  nav ul li button {
-    transition: all 0.5s ease;
-  }
+.sidebar nav ul li button {
+  transition: all 0.5s ease;
 }
 
 .sidebar:hover {
-  /* background-color: var(--sidebar-colour); */
   box-shadow: 0px 0px 3px 3px rgb(0 0 0 / 10%);
-
-  /* nav ul li button {
-    background-color: var(--sidebar-colour)
-  } */
 }
 
 .sidebar nav ul {
   list-style: none;
 }
-
-/* .sidebar nav ul li {
-  margin-bottom: 15px;
-} 
-*/
 
 .sidebar nav ul li button {
   border: none;
@@ -45,20 +34,15 @@
   font-family: 'Tomorrow', sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
-
   font-size: 16px;
   text-align: left;
   width: 100%;
   padding: 4px 8px 4px 0px;
   background-color: inherit;
-  /* Will inherit from parent sidebar */
-
   transition: padding 0.5s ease;
-
 }
 
 .sidebar nav ul li button:hover {
-  /* background-color: rgba(255, 255, 255, 0.1); */
   border-right: 2px solid #fcfbfc;
 }
 
@@ -66,55 +50,124 @@
   font-weight: 500;
   padding: 4px 8px 4px 8px;
   color: var(--accent-lugano-blue);
+}
 
+/* Mobile Header Styles */
+.mobile-header {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: rgba(88, 94, 105, 0.08); /* Acrylic effect base */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
 
-  /*background-color: rgba(255, 255, 255, 0.2);*/
+.mobile-header.scrolled {
+  transform: translateY(-100%);
+}
+
+.mobile-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+}
+
+.current-section {
+  font-family: 'Tomorrow', sans-serif;
+  font-weight: 500;
+  color: white;
+  font-size: 18px;
+}
+
+/* Mobile Menu Dropdown */
+.mobile-menu-dropdown {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  background: rgba(16, 18, 19, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.mobile-menu-dropdown.open {
+  max-height: 300px;
+}
+
+.mobile-menu-dropdown nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* .mobile-menu-dropdown nav ul li {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+} */
+
+.mobile-menu-dropdown nav ul li:last-child {
+  border-bottom: none;
+}
+
+.mobile-menu-dropdown nav ul li button {
+  width: 100%;
+  text-align: left;
+  padding: 12px 20px;
+  background: none;
+  border: none;
+  color: white;
+  font-family: 'Tomorrow', sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.mobile-menu-dropdown nav ul li button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.mobile-menu-dropdown nav ul li.active button {
+  color: var(--accent-lugano-blue);
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
 }
 
 /* Mobile Menu Toggle */
 .mobile-menu-toggle {
-  opacity: 0.5;
+  opacity: 0.8;
   display: none;
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 1001;
   background: var(--accent-firmament-blue);
   color: white;
   border: none;
   width: 40px;
   height: 40px;
   border-radius: 4px;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.3s ease;
+  justify-content: center;
+  align-items: center;
 }
 
 .mobile-menu-toggle:hover {
   opacity: 1;
 }
 
+/* Responsive Styles */
 @media (max-width: 768px) {
   .sidebar {
-    width: 100%;
-    height: auto;
-    position: fixed;
-    top: 0;
-    left: -100%;
-    z-index: 1000;
-    transition: left 0.3s ease;
-    padding: 16px 20px 16px 20px;
+    display: none;
   }
-
-  .sidebar nav ul li button {
-    padding: 2px 8px 2px 0px;
-  }
-
-  .sidebar.mobile-open {
-    left: 0;
-    background-color: var(--page-colour-translucent);
-    backdrop-filter: blur(6px);
-  }
-
-  .mobile-menu-toggle {
+  
+  .mobile-header {
     display: block;
+  }
+  
+  .mobile-menu-toggle {
+    display: flex;
   }
 }
