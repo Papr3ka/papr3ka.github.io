@@ -186,14 +186,6 @@ const PhotoGallery = ({ thumbnails, photos }) => {
         calculateColumns();
     }, [dimensions, thumbnails, columnCount, gapSize]);
 
-    // Disable scroll when image modal is open
-    // useEffect(() => {
-    //     if (showModal) {
-    //         document.getElementById('app-root').style.overflowY = 'hidden';
-    //     } else document.getElementById('app-root').style.overflowY = 'unset';
-    //     return () => { };
-    // }, [showModal]);
-
     const handleImageClick = (index) => {
         setCurrentImageIndex(index);
         setShowModal(true);
@@ -310,7 +302,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
             {/* Image Modal */}
             {showModal && (
                 <div className="image-modal">
-                    <button className="modal-close pointer" onClick={closeModal}>
+                    <button className="modal-close pointer prevent-select" onClick={closeModal}>
                         &times;
                     </button>
 
@@ -381,7 +373,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
 
                     </div>
                     {/* navigation buttons */}
-                    <div className="mobile-nav-buttons">
+                    <div className="mobile-nav-buttons prevent-select">
                         <button
                             className="modal-nav modal-prev pointer"
                             onClick={(e) => {
@@ -417,7 +409,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
                     </div>
                     {/* Preview Strip */}
                     {showPreviewStrip && (
-                        <div className="image-preview-strip">
+                        <div className="image-preview-strip prevent-select">
                             {thumbnails.slice(
                                 Math.max(0, currentImageIndex - Math.floor(imgPreviewCount / 2)),
                                 Math.min(thumbnails.length, currentImageIndex + Math.ceil(imgPreviewCount / 2))
