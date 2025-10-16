@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import './Gallery.css';
@@ -24,12 +24,21 @@ function importAll(r) {
 const thumbnails = importAll(require.context('../../assets/thumbnails/', false, /\.(png|jpe?g|svg|webp)$/));
 const photos = importAll(require.context('../../assets/photos/', false, /\.(png|jpe?g|svg|webp)$/));
 
+// Format EXIF values nicely
+const formatShutterSpeed = (speed) => {
+    if (!speed) return '—';
+    if (speed >= 1) return `${speed}s`;
+    return `1/${Math.round(1 / speed)}s`;
+};
+
+const formatFocalLength = (fl) => fl ? `${Math.round(fl)}mm` : '—';
+const formatAperture = (f) => f ? `f/${f}` : '—';
+const formatISO = (iso) => iso || '—';
+
 const PhotoGallery = ({ thumbnails, photos }) => {
     const [expanded, setExpanded] = useState(false);
     const [columns, setColumns] = useState([]);
     const [dimensions, setDimensions] = useState({});
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
 
     // Masonary grid sizing
     const [columnCount, setColumnCount] = useState(3);
@@ -37,15 +46,43 @@ const PhotoGallery = ({ thumbnails, photos }) => {
 
     // Image modal
     const [showModal, setShowModal] = useState(false);
-    const [imgPreviewCount, setImgPreviewCount] = useState(7); // this should always be an odd number
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [exifData, setExifData] = useState(null);
+    const [imgPreviewCount, setImgPreviewCount] = useState(7);
     const [showPreviewStrip, setShowPreviewStrip] = useState(true);
 
     const galleryRef = useRef(null);
     const maxVisibleHeight = 960; // Max height before collapsing (in pixels)
 
+    // Load EXIF only when needed
+    const loadExif = useCallback(async (imageUrl) => {
+        try {
+            const exifr = await import('exifr');
+            const data = await exifr.parse(imageUrl);
+
+            if (!data) {
+                setExifData(null);
+                return;
+            }
+
+            setExifData({
+                // make: data.Make || '—',
+                // model: data.Model || '—',
+                focalLength: formatFocalLength(data.FocalLength),
+                fNumber: formatAperture(data.FNumber?.toFixed(1)),
+                shutterSpeed: formatShutterSpeed(data.ExposureTime),
+                iso: formatISO(data.ISO),
+                // captureDate: data.DateTimeOriginal || data.DateTime || '—'
+            });
+        } catch (err) {
+            console.warn('Failed to load EXIF:', err);
+            setExifData(null);
+        }
+    }, []);
+
     const handleResize = () => {
         const width = window.innerWidth;
-        const height = window.innerHeight;
+        // const height = window.innerHeight;
 
         if (width < 512) {
             setColumnCount(1);
@@ -54,7 +91,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
             setImgPreviewCount(3)
         } else if (width < 768) {
             setColumnCount(2);
-            setGapSize(10);
+            setGapSize(8);
 
             setImgPreviewCount(5)
         } else if (width < 1024) {
@@ -64,18 +101,18 @@ const PhotoGallery = ({ thumbnails, photos }) => {
             setImgPreviewCount(7)
         } else if (width < 1280) {
             setColumnCount(4);
-            setGapSize(16);
+            setGapSize(10);
 
             setImgPreviewCount(11)
         } else {
             setColumnCount(Math.floor(width / 256));
-            setGapSize(20);
+            setGapSize(12);
 
             setImgPreviewCount(15);
         }
 
         // Only show the preview strip if the height is >= 768 px
-        setShowPreviewStrip(height >= 768);
+        //setShowPreviewStrip(height >= 768);
     };
 
     // Calculate responsive column count and gap
@@ -152,6 +189,8 @@ const PhotoGallery = ({ thumbnails, photos }) => {
     const handleImageClick = (index) => {
         setCurrentImageIndex(index);
         setShowModal(true);
+        setExifData(null); // clear previous
+        loadExif(photos[index]);
     };
 
     const navigateImage = (direction) => {
@@ -162,6 +201,8 @@ const PhotoGallery = ({ thumbnails, photos }) => {
             newIndex = (currentImageIndex + 1) % thumbnails.length;
         }
         setCurrentImageIndex(newIndex);
+        setExifData(null);
+        loadExif(photos[newIndex]);
     };
 
     const closeModal = () => {
@@ -301,86 +342,95 @@ const PhotoGallery = ({ thumbnails, photos }) => {
                     </button>
 
                     <div className="modal-content-container" onClick={(e) => e.stopPropagation()}>
-                        <div className="modal-image-container">
+                        <div className="modal-image-container prevent-select">
                             {currentImageIndex >= photos.length ? (
                                 <div className="image-error-placeholder">
                                     <span>Image Not Found</span>
                                 </div>
                             ) : (
-                                <LazyLoadImage
-                                    src={photos[currentImageIndex]}
-                                    effect="blur"
-                                    wrapperProps={{
-                                        style: { transition: "0.5s" },
-                                    }}
-                                    alt={`Full resolution ${currentImageIndex}`}
-                                    className="modal-image"
-                                />
+                                <>
+                                    <LazyLoadImage
+                                        src={photos[currentImageIndex]}
+                                        effect="blur"
+                                        wrapperProps={{
+                                            style: { transition: "0.5s" },
+                                        }}
+                                        alt={`Full resolution ${currentImageIndex}`}
+                                        className="modal-image"
+                                    />
+                                    {/* EXIF Overlay - appears on hover */}
+                                    {exifData && (
+                                        <div className="exif-overlay">
+                                            <span className="exif-text">{exifData.fNumber || '—'} {exifData.shutterSpeed || '—'} ISO{exifData.iso || ' —'} {exifData.focalLength || '—'}</span>
+                                        </div>
+                                    )}
+                                </>
                             )}
                         </div>
 
-                        {/* Mobile navigation buttons */}
-                        <div className="mobile-nav-buttons">
-                            <button
-                                className="modal-nav modal-prev pointer"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    navigateImage('prev');
-                                }}
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none">
-                                    <path d="M15.293 3.293 6.586 12l8.707 8.707 1.414-1.414L9.414 12l7.293-7.293-1.414-1.414z"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    />
-                                </svg>
-                            </button>
-                            <button
-                                className="modal-nav modal-next pointer"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    navigateImage('next');
-                                }}
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
-                                    <path d="M7.293 4.707 14.586 12l-7.293 7.293 1.414 1.414L17.414 12 8.707 3.293 7.293 4.707z"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    />
-                                </svg>
-                            </button>
-                        </div>
 
-                        {/* Image preview strip */}
-                        {showPreviewStrip && (<div className="image-preview-strip">
+
+
+                    </div>
+                    {/* navigation buttons */}
+                    <div className="mobile-nav-buttons">
+                        <button
+                            className="modal-nav modal-prev pointer"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                navigateImage('prev');
+                            }}
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none">
+                                <path d="M15.293 3.293 6.586 12l8.707 8.707 1.414-1.414L9.414 12l7.293-7.293-1.414-1.414z"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
+                        </button>
+                        <button
+                            className="modal-nav modal-next pointer"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                navigateImage('next');
+                            }}
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                                <path d="M7.293 4.707 14.586 12l-7.293 7.293 1.414 1.414L17.414 12 8.707 3.293 7.293 4.707z"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
+                        </button>
+                    </div>
+                    {/* Preview Strip */}
+                    {showPreviewStrip && (
+                        <div className="image-preview-strip">
                             {thumbnails.slice(
                                 Math.max(0, currentImageIndex - Math.floor(imgPreviewCount / 2)),
                                 Math.min(thumbnails.length, currentImageIndex + Math.ceil(imgPreviewCount / 2))
-                            ).map((thumb, index) => {
-                                const originalIndex = Math.max(0, currentImageIndex - Math.floor(imgPreviewCount / 2)) + index;
+                            ).map((thumb, idx) => {
+                                const originalIndex = Math.max(0, currentImageIndex - Math.floor(imgPreviewCount / 2)) + idx;
                                 return (
                                     <div
                                         key={`preview-${originalIndex}`}
-                                        className={`preview-thumb pointer ${originalIndex === currentImageIndex ? 'active' : ''}`}
+                                        className={`preview-thumb ${originalIndex === currentImageIndex ? 'active' : ''}`}
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             setCurrentImageIndex(originalIndex);
+                                            loadExif(photos[originalIndex]);
                                         }}
                                     >
-                                        <LazyLoadImage
-                                            src={thumb}
-                                            effect="blur"
-                                            alt={`Thumbnail ${originalIndex}`}
-                                        />
+                                        <LazyLoadImage src={thumb} effect="blur" alt={`Thumb ${originalIndex}`} height={64}/>
                                     </div>
                                 );
                             })}
-                        </div>)}
-                    </div>
+                        </div>
+                    )}
                 </div>
             )}
         </div>

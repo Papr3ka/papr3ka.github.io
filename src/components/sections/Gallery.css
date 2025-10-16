@@ -24,7 +24,7 @@
 .photo-container {
     position: relative;
     transition: transform 0.2s;
-    border-radius: 5px;
+    border-radius: 2px;
     overflow: hidden;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
@@ -32,7 +32,6 @@
 .photo-container:hover {
     transform: scale(1.03);
 }
-
 
 .photo {
     /* width: 100%;
@@ -92,72 +91,59 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(8px);
+    background-color: rgba(0, 0, 0, 0.92);
+    backdrop-filter: blur(4px);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    /* cursor: pointer; */
     padding: 20px;
     box-sizing: border-box;
-}
-
-.modal-content-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    max-width: 1600px;
-    gap: 20px;
-}
-
-.modal-main-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    position: relative;
+    overflow: hidden;
 }
 
 .modal-image-container {
     position: relative;
-    max-width: 100%;
-    max-height: 70vh;
+    width: fit-content;
+    max-height: 90vh;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: default;
+    margin-left: auto;
+    margin-right: auto;
     padding-left: 64px;
     padding-right: 64px;
+    margin-bottom: 64px;
 }
 
 .modal-image {
     max-width: 100%;
-    max-height: 70vh;
+    max-height: 90vh;
     object-fit: contain;
-    border-radius: 5px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    border-radius: 2px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    transition: opacity 0.3s;
 }
 
+/* Close button */
 .modal-close {
-    background: var(--page-colour-translucent);
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 8px;
+    right: 16px;
     background: none;
     border: none;
-    color: var(--text-colour);
-    font-size: 2.5rem;
-    padding: 0 15px;
-    z-index: 1001;
-    transition: color 0.3s;
+    color: white;
+    font-size: 2.2rem;
+    padding: 8px;
+    z-index: 1002;
+    cursor: pointer;
+    transition: color 0.2s;
 }
 
 .modal-close:hover {
-    color: var(--accent-lugano-blue)
+    color: var(--accent-lugano-blue);
 }
 
 .modal-nav {
@@ -176,75 +162,104 @@
     flex-shrink: 0;
 }
 
-/* Image preview strip */
+/* EXIF overlay container */
+.exif-overlay {
+    margin-left: 64px;
+    /* Counters the 64px padding on .modal-image-container*/
+    position: absolute;
+    padding: 4px;
+    top: 4px;
+    left: 8px;
+    background: rgba(0, 0, 0, 0.75);
+
+    border-radius: 4px;
+    font-size: 0.5rem;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1001;
+    backdrop-filter: blur(4px);
+    vertical-align: middle;
+}
+
+.exif-text {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.modal-image-container:hover .exif-overlay {
+    opacity: 1;
+}
+
+/* Preview strip */
 .image-preview-strip {
-    position: relative;
-    /* bottom: 13%; */
+    position: absolute;
+    /* margin-left: auto;
+    margin-right: auto; */
+    bottom: 0;
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     width: 100%;
-    overflow-x: clip;
-    padding: 10px 0;
+    /* max-width: 90vw; */
+    overflow-x: auto;
+    padding: 10px;
+    scrollbar-width: thin;
 }
 
 .preview-thumb {
-    width: 60px;
-    height: 60px;
-    border-radius: 4px;
-    overflow: hidden;
-    opacity: 0.7;
+    /* width: 64px; */
+    height: 64px;
+    border-radius: 2px;
+    overflow-y: hidden;
+    opacity: 0.2;
     transition: all 0.2s ease;
     flex-shrink: 0;
-    border: 2px solid transparent;
+    /* border: 1px solid transparent; */
+    cursor: pointer;
 }
 
 .preview-thumb:hover {
-    opacity: 0.9;
+    opacity: 0.95;
 }
 
 .preview-thumb.active {
     opacity: 1;
-    border-color: var(--accent-lugano-blue);
-    transform: scale(1.1);
+    /* border-color: var(--accent-lugano-blue); */
+    /* transform: scale(1.08); */
 }
 
-.preview-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* Side navigation buttons */
+/* Side navigation (desktop) */
 .side-nav {
-    position: fixed;
-    /* top: 50%; */
-    transform: translateY(-50%);
+    position: absolute;
+    bottom: 50%;
     z-index: 1002;
-    background: var(--page-colour-translucent);
-    border-radius: 5%;
-    width: 48px;
-    height: 64px;
+    background: rgba(30, 30, 30, 0.6);
+    color: white;
+    border: none;
+    width: 32px;
+    height: 48x;
+    border-radius: 4px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: none;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: color 0.25s ease;
+
 }
 
 .side-nav:hover {
-    /* background: rgba(0, 0, 0, 0.8);
-    transform: scale(1.05); */
-    color: var(--accent-lugano-blue)
+    background: rgba(50, 50, 50, 0.8);
+    color: var(--accent-lugano-blue);
+    /* transform: scale(1.05); */
 }
 
 .modal-prev.side-nav {
-    left: 20px;
+    left: 16px;
 }
 
 .modal-next.side-nav {
-    right: 20px;
+    right: 16px;
 }
 
 /* Mobile navigation buttons */
@@ -258,9 +273,9 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .modal-content {
+    /* .modal-content {
         max-width: calc(100% - 40px);
-    }
+    } */
 
     .modal-image-container {
         padding-left: 0;
@@ -268,23 +283,26 @@
     }
 
     .modal-close {
-        right: 16px;
-        top: 12px;
+        top: 4px;
+        right: 8px;
+        font-size: 1.8rem;
     }
 
-    /* .modal-nav {
-        width: 40px;
-        height: 40px;
-        font-size: 1.5rem;
-        position: absolute;
-    } */
+    .exif-overlay {
+        margin-left: 0;
+        /* 64px padding on .modal-image-container is removed at this size*/
+    }
 
     .side-nav {
-        /* margin-left: auto;
-        margin-right: auto; */
-        width: 32px;
-        height: 48px;
-        bottom: 2%;
+        bottom: 8px;
+    }
+
+    .modal-prev.side-nav {
+        left: 8px;
+    }
+
+    .modal-next.side-nav {
+        right: 8px;
     }
 
     .modal-content-container {
@@ -323,6 +341,19 @@
 }
 
 @media (max-width: 512px) {
+    .modal-image {
+        max-height: 85vh;
+    }
+
+    .exif-overlay {
+        margin-left: 0;
+        padding: 2px;
+        top: 4px;
+        left: 4px;
+        border-radius: 2px;
+        font-size: 0.35rem;
+    }
+
 
     .image-error-placeholder {
         width: 300px;
@@ -330,9 +361,15 @@
         font-size: 1rem;
     }
 
-    .side-nav {
-        /* margin-left: auto;
-        margin-right: auto; */
-        bottom: 0;
+}
+
+/* For very small phones */
+@media (max-height: 768px) {
+    .modal-image-container {
+        max-height: 70vh;
+    }
+
+    .modal-image {
+        max-height: 70vh;
     }
 }
