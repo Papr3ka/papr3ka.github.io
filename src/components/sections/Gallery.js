@@ -186,6 +186,14 @@ const PhotoGallery = ({ thumbnails, photos }) => {
         calculateColumns();
     }, [dimensions, thumbnails, columnCount, gapSize]);
 
+    // Disable scroll when image modal is open
+    // useEffect(() => {
+    //     if (showModal) {
+    //         document.getElementById('app-root').style.overflowY = 'hidden';
+    //     } else document.getElementById('app-root').style.overflowY = 'unset';
+    //     return () => { };
+    // }, [showModal]);
+
     const handleImageClick = (index) => {
         setCurrentImageIndex(index);
         setShowModal(true);
@@ -361,7 +369,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
                                     {/* EXIF Overlay - appears on hover */}
                                     {exifData && (
                                         <div className="exif-overlay">
-                                            <span className="exif-text">{exifData.fNumber || '—'} {exifData.shutterSpeed || '—'} ISO{exifData.iso || ' —'} {exifData.focalLength || '—'}</span>
+                                            <span className="exif-text">{exifData.fNumber} {exifData.shutterSpeed} ISO{exifData.iso} {exifData.focalLength}</span>
                                         </div>
                                     )}
                                 </>
@@ -425,7 +433,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
                                             loadExif(photos[originalIndex]);
                                         }}
                                     >
-                                        <LazyLoadImage src={thumb} effect="blur" alt={`Thumb ${originalIndex}`} height={64}/>
+                                        <LazyLoadImage src={thumb} effect="blur" alt={`Thumb ${originalIndex}`} height={64} />
                                     </div>
                                 );
                             })}
