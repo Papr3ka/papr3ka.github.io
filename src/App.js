@@ -5,9 +5,6 @@ import './App.css';
 
 import AppProvider from './components/shared/Context';
 import Home from './components/pages/Home.js'
-import Tools from './components/pages/Tools.js'
-
-
 
 function App() {
   return (
@@ -17,7 +14,6 @@ function App() {
           {/* Routes */}
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/tools" element={<Tools />} />
           </Routes>
         </BrowserRouter>
       </div>

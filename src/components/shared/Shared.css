@@ -157,6 +157,72 @@
   opacity: 1;
 }
 
+.n-state-slider {
+  --n-states: 3; /* Default fallback */
+  display: flex;
+  position: relative;
+  width: 100%;
+  max-width: 108px;
+  height: 28px;
+  background: var(--blue-gray);
+  border-radius: 4px;
+  overflow: hidden;
+  font-family: system-ui, sans-serif;
+  user-select: none;
+}
+
+.n-state-slider.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.slider-option {
+  font-family: 'Inter', sans-serif;
+
+  flex: 1;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 500;
+  color: #555;
+  z-index: 2;
+  transition: color 0.2s ease, background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slider-option:hover:not(:disabled):not(.active) {
+  color: var(--slate-blue);
+}
+
+.slider-option.active {
+  color: #fff;
+}
+
+.slider-indicator {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: var(--slate-blue);
+  border-radius: 4px;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+/* Focus styles for accessibility */
+/* .slider-option:focus-visible {
+  outline: 2px solid #0056b3;
+  outline-offset: 2px;
+  border-radius: 4px;
+} */
+
+/* Disabled state */
+.slider-option:disabled {
+  cursor: not-allowed;
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
   .sidebar {

@@ -1,21 +1,24 @@
 :root {
   --sidebar-width: 240px;
 
+  
   --sidebar-colour: #1f1f1f;
   --page-colour: #17191d;
   --page-colour-translucent: #17191dc0;
   --text-colour: azure;
 
   --accent-lugano-blue: #3864b4;
-  /* lugano-blue */
   --accent-firmament-blue: #192a55;
   --accent-red: #FF3864;
   --accent-coral: #ED8055;
   --accent-mint: #63C595;
   --near-black: #101213;
   --blue-gray: #282c34;
+  --shallow-dark-gray: #1e1e1e;
+  --slate-blue: #6c5ce7;
   --payne-gray: #585e69;
-  /* Colours */
+  
+
 
 }
 
@@ -85,6 +88,11 @@ html {
 
 .pointer {
   cursor: pointer;
+}
+
+.space-between {
+  display: flex;
+  justify-content: space-between;
 }
 
 * {

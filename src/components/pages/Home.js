@@ -11,6 +11,7 @@ import About from '../sections/About.js'
 import Skills from '../sections/Skills.js'
 import Experience from '../sections/Experience.js'
 import Gallery from '../sections/Gallery.js'
+import Resources from '../sections/Resources.js' // Add later
 import Contact from '../sections/Contact.js'
 
 import Footer from '../sections/Footer.js'
@@ -20,6 +21,7 @@ const sections = [
     { id: 'skills', title: 'Skills', component: Skills },
     { id: 'experience', title: 'Experience', component: Experience },
     { id: 'gallery', title: 'Gallery', component: Gallery },
+    //{ id: 'resources', title: 'Resources', component: Resources },
     { id: 'contact', title: 'Contact', component: Contact }
 ];
 

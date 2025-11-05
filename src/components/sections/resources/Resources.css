@@ -1,0 +1,119 @@
+@import url("../../../App.css");
+
+.text-line {
+  width: 30px;
+  height: 1px;
+  background-color: #444;
+  margin-left: 0.5rem;
+}
+
+/* .input-group {
+  margin: 1.5rem 0;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #a0a0a0;
+}
+
+.input-field {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background-color: #1e1e1e;
+  color: white;
+  font-family: monospace;
+  font-size: 1rem;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #6c5ce7;
+  box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.2);
+} */
+
+.unit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+  margin-left: 0.4rem;
+  margin-right: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+
+.unit-card {
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  padding: 1rem;
+  border: 1px solid #2a2a2a;
+  transition: all 0.2s ease;
+}
+
+.unit-card:hover {
+  background-color: #222;
+  border-color: #444;
+}
+
+.unit-card h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+  color: var(--slate-blue);
+  font-weight: 500;
+}
+
+.unit-card p {
+  margin: 0;
+  /* font-family: 'Inter', sans-serif; */
+  font-size: 0.95rem;
+  word-break: break-all;
+  overflow-wrap: break-word;
+  color: #f0f0f0;
+}
+
+.explorer-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 0px solid #333;
+  border-radius: 3px;
+  background-color: #1e1e1e;
+  color: var(--text-colour);
+  font-family: 'Fira Code', sans-serif;
+  transition: color 0.5s ease;
+}
+
+.explorer-input:focus {
+  outline: none;
+  /* border-color: #6c5ce7; */
+  box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.2);
+}
+
+.invalid-input {
+  color: var(--accent-red);
+}
+
+/* Use with .space-between from App.css */
+.adjustable-header {
+  /* padding-top: 0.25rem; */
+  padding-bottom: 0.25rem;
+}
+
+.breakdown {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #a0a0a0;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .pill-container {
+    padding: 1.5rem;
+  }
+
+  .unit-grid {
+    grid-template-columns: 1fr;
+  }
+}
