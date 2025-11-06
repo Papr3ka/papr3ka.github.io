@@ -6,12 +6,12 @@ const inputDir = path.join(__dirname, '../assets/photos');
 const outputDir = path.join(__dirname, '../assets/thumbnails');
 
 /* Settings
- * targetMegapixels = 2 (for ~2MP thumbnails)
- * quality = 80
+ * targetKilopixels = 144 (for ~144KP thumbnails)
+ * quality = 92
  * to webp
 */
-const targetMegapixels = 2; // Target resolution in megapixels
-const quality = 80; // Adjust quality as needed
+const targetKilopixels = 144; // Target resolution in Kilopixels
+const quality = 92; // Adjust quality as needed
 
 if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
 
@@ -31,16 +31,16 @@ fs.readdirSync(inputDir).forEach(async (file) => {
     const metadata = await sharp(inputPath).metadata();
     const originalWidth = metadata.width;
     const originalHeight = metadata.height;
-    const originalMegapixels = (originalWidth * originalHeight) / 1000000;
+    const originalKilopixels = (originalWidth * originalHeight) / 1000;
 
     // Only resize if original is larger than target
-    if (originalMegapixels <= targetMegapixels) {
+    if (originalKilopixels <= targetKilopixels) {
       console.log(`Skipping resize for ${file}`);
       return;
     }
 
-    // Calculate scaling factor to reach target megapixels
-    const scaleFactor = Math.sqrt(targetMegapixels / originalMegapixels);
+    // Calculate scaling factor to reach target Kilopixels
+    const scaleFactor = Math.sqrt(targetKilopixels / originalKilopixels);
     const newWidth = Math.round(originalWidth * scaleFactor);
     const newHeight = Math.round(originalHeight * scaleFactor);
 

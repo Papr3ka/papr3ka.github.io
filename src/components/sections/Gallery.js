@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 import './Gallery.css';
 
 // Pin photos to the start of the gallery
@@ -49,7 +50,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [exifData, setExifData] = useState(null);
     const [imgPreviewCount, setImgPreviewCount] = useState(7);
-    const [showPreviewStrip, setShowPreviewStrip] = useState(true);
+    //const [showPreviewStrip, setShowPreviewStrip] = useState(true);
 
     const galleryRef = useRef(null);
     const maxVisibleHeight = 960; // Max height before collapsing (in pixels)
@@ -186,28 +187,56 @@ const PhotoGallery = ({ thumbnails, photos }) => {
         calculateColumns();
     }, [dimensions, thumbnails, columnCount, gapSize]);
 
-    const handleImageClick = (index) => {
+    const handleImageClick = useCallback((index) => {
+        if (currentImageIndex === index && showModal) return;
         setCurrentImageIndex(index);
         setShowModal(true);
         setExifData(null); // clear previous
         loadExif(photos[index]);
-    };
+    }, [currentImageIndex, loadExif, photos, showModal]);
 
-    const navigateImage = (direction) => {
-        let newIndex;
+    const navigateImage = useCallback((direction) => {
+        if (!showModal) return;
         if (direction === 'prev') {
-            newIndex = (currentImageIndex - 1 + thumbnails.length) % thumbnails.length;
+            handleImageClick((currentImageIndex - 1 + thumbnails.length) % thumbnails.length);
         } else {
-            newIndex = (currentImageIndex + 1) % thumbnails.length;
+            handleImageClick((currentImageIndex + 1) % thumbnails.length);
         }
-        setCurrentImageIndex(newIndex);
-        setExifData(null);
-        loadExif(photos[newIndex]);
-    };
+    }, [currentImageIndex, handleImageClick, showModal, thumbnails.length]);
 
     const closeModal = () => {
         setShowModal(false);
     };
+
+    const handleKeyDown = useCallback((event) => {
+        // Stop propagation to prevent parent handlers from interfering
+        event.stopPropagation();
+
+        if (event.key === "ArrowLeft") {
+            navigateImage('prev');
+        } else if (event.key === "ArrowRight") {
+            navigateImage('next');
+        } else if (showModal){
+            if (event.key === "Home") {
+                event.preventDefault();
+                handleImageClick(0);
+            } else if (event.key === "End") {
+                event.preventDefault();
+                handleImageClick(thumbnails.length - 1);
+            } else if (event.key === "Escape") {
+                event.preventDefault();
+                closeModal();
+            }
+        }
+    }, [handleImageClick, navigateImage, showModal, thumbnails.length]);
+
+    useEffect(() => {
+        window.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [handleKeyDown]);
 
     const galleryHeight = columns.reduce((max, column) =>
         Math.max(max, column.height), 0
@@ -248,6 +277,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
                                 onClick={() => handleImageClick(photo.index)}
                             >
                                 <LazyLoadImage
+                                    placeholderSrc={photo.src}
                                     src={photo.src}
                                     effect="blur"
                                     wrapperProps={{
@@ -257,10 +287,8 @@ const PhotoGallery = ({ thumbnails, photos }) => {
                                             left: 0,
                                             width: '100%',
                                             height: '100%',
-                                            transition: "1s"
                                         },
                                     }}
-                                    alt={`Photo ${colIndex * 100 + photoIndex + 1}`}
                                     className="photo prevent-select"
                                     style={{
                                         width: '100%',
@@ -268,6 +296,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
                                         objectFit: 'cover',
                                         cursor: 'pointer'
                                     }}
+                                    visibleByDefault={true}
                                 />
                             </div>
                         ))}
@@ -350,13 +379,12 @@ const PhotoGallery = ({ thumbnails, photos }) => {
                             ) : (
                                 <>
                                     <LazyLoadImage
+                                        key={currentImageIndex}
+                                        placeholderSrc={thumbnails[currentImageIndex]}
                                         src={photos[currentImageIndex]}
                                         effect="blur"
-                                        wrapperProps={{
-                                            style: { transition: "0.5s" },
-                                        }}
-                                        alt={`Full resolution ${currentImageIndex}`}
                                         className="modal-image"
+                                        visibleByDefault={false}
                                     />
                                     {/* EXIF Overlay - appears on hover */}
                                     {exifData && (
@@ -367,10 +395,6 @@ const PhotoGallery = ({ thumbnails, photos }) => {
                                 </>
                             )}
                         </div>
-
-
-
-
                     </div>
                     {/* navigation buttons */}
                     <div className="mobile-nav-buttons prevent-select">
@@ -408,7 +432,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
                         </button>
                     </div>
                     {/* Preview Strip */}
-                    {showPreviewStrip && (
+                    {/*showPreviewStrip && */(
                         <div className="image-preview-strip prevent-select">
                             {thumbnails.slice(
                                 Math.max(0, currentImageIndex - Math.floor(imgPreviewCount / 2)),
@@ -425,7 +449,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
                                             loadExif(photos[originalIndex]);
                                         }}
                                     >
-                                        <LazyLoadImage src={thumb} effect="blur" alt={`Thumb ${originalIndex}`} height={64} />
+                                        <LazyLoadImage src={thumb} effect="blur" height={64} />
                                     </div>
                                 );
                             })}
