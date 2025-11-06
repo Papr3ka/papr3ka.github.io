@@ -39,7 +39,7 @@ const Home = () => {
             />
             <div className="content">
                 {sections.map((section, index) => (
-                    <>
+                    <div key={index}>
                         <section
                             key={section.id}
                             id={section.id}
@@ -49,7 +49,7 @@ const Home = () => {
 
                         </section>
                         {/*index < (sections.length - 1) && <hr className="content-divider" />*/}
-                    </>
+                    </div>
                 ))}
                 <Footer />
             </div>
