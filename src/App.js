@@ -7,12 +7,9 @@ import Home from './components/pages/Home.js'
 
 function App() {
 
-  // Scroll is disabled when modal is open
-  // This is done in the provider
-
   return (
     <AppProvider>
-      <div className='app' id='appcontent' >
+      <div className='app'>
         <BrowserRouter>
           {/* Routes */}
           <Routes>

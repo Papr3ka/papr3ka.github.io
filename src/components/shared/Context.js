@@ -4,7 +4,7 @@ import { createContext, useContext, useReducer } from 'react';
 const initialState = {
   // theme: 'dark',
   isGalleryModalOpen: false, // Add the new state property
-  //lastScrollPosition: 0,
+  lastScrollPosition: 0,
 };
 
 // Action types for the reducer
@@ -27,11 +27,11 @@ const appReducer = (state, action) => {
         ...state,
         isGalleryModalOpen: action.payload,
       };
-    // case ActionTypes.SET_LAST_SCROLL_POSITION:
-    //   return {
-    //     ...state,
-    //     lastScrollPosition: action.payload,
-    //   };
+    case ActionTypes.SET_LAST_SCROLL_POSITION:
+      return {
+        ...state,
+        lastScrollPosition: action.payload,
+      };
 
     // Add more cases for new state properties
 
@@ -52,10 +52,10 @@ export const AppProvider = ({ children }) => {
     // setTheme: (theme) => dispatch({ type: ActionTypes.SET_THEME, payload: theme }),
     setGalleryModalOpen: (isOpen) => {
       dispatch({ type: ActionTypes.SET_GALLERY_MODAL_OPEN, payload: isOpen })
-      //dispatch({ type: ActionTypes.SET_LAST_SCROLL_POSITION, payload: window.pageYOffset })
+      dispatch({ type: ActionTypes.SET_LAST_SCROLL_POSITION, payload: window.pageYOffset })
 
-      // Disable scroll when the modal is open
-      document.getElementById('appcontent').style.overflowY = isOpen ? 'hidden' : 'visible'
+      // TODO: Disable scroll when the modal is open
+      // document.getElementById('appcontent').style.overflowY = isOpen ? 'hidden' : 'visible'
     }, // Add the new helper function
     // Add more helper functions as needed
   };
