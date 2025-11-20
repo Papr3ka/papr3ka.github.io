@@ -1,7 +1,6 @@
 :root {
   --sidebar-width: 240px;
 
-  
   --sidebar-colour: #1f1f1f;
   --page-colour: #17191d;
   --page-colour-translucent: #17191dc0;
@@ -18,8 +17,6 @@
   --slate-blue: #6c5ce7;
   --payne-gray: #585e69;
   
-
-
 }
 
 html {
@@ -110,6 +107,16 @@ body {
 .app {
   /* display: flex; */
   min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none; /* Internet Explorer and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Opera */
 }
 
 .content {

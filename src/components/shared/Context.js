@@ -2,15 +2,15 @@ import { createContext, useContext, useReducer } from 'react';
 
 // Initial state for your global state
 const initialState = {
-  //   theme: 'dark',
-
+  // theme: 'dark',
+  isGalleryModalOpen: false, // Add the new state property
+  //lastScrollPosition: 0,
 };
 
 // Action types for the reducer
 export const ActionTypes = {
-
-  //   SET_THEME: 'SET_THEME',
-
+  // SET_THEME: 'SET_THEME',
+  SET_GALLERY_MODAL_OPEN: 'SET_GALLERY_MODAL_OPEN', // Add the new action type
   // Add more action types as needed
 };
 
@@ -21,6 +21,16 @@ const appReducer = (state, action) => {
     //   return {
     //     ...state,
     //     theme: action.payload,
+    //   };
+    case ActionTypes.SET_GALLERY_MODAL_OPEN: // Handle the new action
+      return {
+        ...state,
+        isGalleryModalOpen: action.payload,
+      };
+    // case ActionTypes.SET_LAST_SCROLL_POSITION:
+    //   return {
+    //     ...state,
+    //     lastScrollPosition: action.payload,
     //   };
 
     // Add more cases for new state properties
@@ -40,7 +50,14 @@ export const AppProvider = ({ children }) => {
   // Optional: Create helper functions for common actions
   const actions = {
     // setTheme: (theme) => dispatch({ type: ActionTypes.SET_THEME, payload: theme }),
-    // // Add more helper functions as needed
+    setGalleryModalOpen: (isOpen) => {
+      dispatch({ type: ActionTypes.SET_GALLERY_MODAL_OPEN, payload: isOpen })
+      //dispatch({ type: ActionTypes.SET_LAST_SCROLL_POSITION, payload: window.pageYOffset })
+
+      // Disable scroll when the modal is open
+      document.getElementById('appcontent').style.overflowY = isOpen ? 'hidden' : 'visible'
+    }, // Add the new helper function
+    // Add more helper functions as needed
   };
 
   const value = {

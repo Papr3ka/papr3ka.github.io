@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { useAppContext } from '../shared/Context.js';
+
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 import './Gallery.css';
@@ -46,7 +48,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
     const [gapSize, setGapSize] = useState(10);
 
     // Image modal
-    const [showModal, setShowModal] = useState(false);
+    const { isGalleryModalOpen: showModal, setGalleryModalOpen } = useAppContext();
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [exifData, setExifData] = useState(null);
     const [imgPreviewCount, setImgPreviewCount] = useState(7);
@@ -190,7 +192,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
     const handleImageClick = useCallback((index) => {
         if (currentImageIndex === index && showModal) return;
         setCurrentImageIndex(index);
-        setShowModal(true);
+        setGalleryModalOpen(true);
         setExifData(null); // clear previous
         loadExif(photos[index]);
     }, [currentImageIndex, loadExif, photos, showModal]);
@@ -205,7 +207,7 @@ const PhotoGallery = ({ thumbnails, photos }) => {
     }, [currentImageIndex, handleImageClick, showModal, thumbnails.length]);
 
     const closeModal = () => {
-        setShowModal(false);
+        setGalleryModalOpen(false);
     };
 
     const handleKeyDown = useCallback((event) => {

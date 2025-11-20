@@ -23,13 +23,12 @@
 
 .photo-container {
     position: relative;
-    transition: transform 0.2s;
-    border-radius: 2px;
-    overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, border 0.5s;
+    border: 1px solid rgba(0, 0, 0, 0); /* Transparent placeholder for hover */
 }
 
 .photo-container:hover {
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Less harsh white */
     transform: scale(1.03);
 }
 
@@ -91,8 +90,10 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.9);
-    backdrop-filter: blur(16px);
+    /* background-color: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(16px); */
+    background: linear-gradient(135deg, #0a0a0a 0%, #000000 100%);
+    
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -122,8 +123,10 @@
     max-width: 100%;
     max-height: 90vh;
     object-fit: contain;
-    border-radius: 2px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    /* border-radius: 2px; */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Less harsh white */
+    /* box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5); Subtle inner glow/darkness */
+    /* box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); */
     transition: opacity 0.3s;
 }
 
